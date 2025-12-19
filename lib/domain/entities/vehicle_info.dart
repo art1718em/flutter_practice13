@@ -79,5 +79,22 @@ class VinDecodeResult extends Equatable {
   List<Object?> get props => [vin, attributes];
 }
 
+class Wmi extends Equatable {
+  final String code;
+  final String? country;
+  final String? name;
+  final String? vehicleType;
+
+  const Wmi({
+    required this.code,
+    this.country,
+    this.name,
+    this.vehicleType,
+  });
+
+  @override
+  List<Object?> get props => [code, country, name, vehicleType];
+}
+
 
 

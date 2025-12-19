@@ -168,5 +168,39 @@ Map<String, dynamic> _$VehicleTypesResponseDtoToJson(
       'Results': instance.results,
     };
 
+WmiDto _$WmiDtoFromJson(Map<String, dynamic> json) => WmiDto(
+      wmi: json['WMI'] as String?,
+      country: json['Country'] as String?,
+      createdOn: json['CreatedOn'] as String?,
+      name: json['Name'] as String?,
+      vehicleType: json['VehicleType'] as String?,
+    );
+
+Map<String, dynamic> _$WmiDtoToJson(WmiDto instance) => <String, dynamic>{
+      'WMI': instance.wmi,
+      'Country': instance.country,
+      'CreatedOn': instance.createdOn,
+      'Name': instance.name,
+      'VehicleType': instance.vehicleType,
+    };
+
+WmiResponseDto _$WmiResponseDtoFromJson(Map<String, dynamic> json) =>
+    WmiResponseDto(
+      count: json['Count'] as int?,
+      message: json['Message'] as String?,
+      searchCriteria: json['SearchCriteria'] as String?,
+      results: (json['Results'] as List<dynamic>?)
+          ?.map((e) => WmiDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$WmiResponseDtoToJson(WmiResponseDto instance) =>
+    <String, dynamic>{
+      'Count': instance.count,
+      'Message': instance.message,
+      'SearchCriteria': instance.searchCriteria,
+      'Results': instance.results,
+    };
+
 
 

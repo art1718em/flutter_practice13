@@ -61,6 +61,7 @@ import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_all_makes
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_models_for_make_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/decode_vin_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_types_for_make_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_wmis_for_manufacturer_usecase.dart';
 
 import 'package:flutter_practice13/features/auth/logic/auth_cubit.dart';
 import 'package:flutter_practice13/features/vehicles/logic/vehicles_cubit.dart';
@@ -181,6 +182,7 @@ Future<void> setupDependencies() async {
   getIt.registerFactory(() => GetModelsForMakeUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => DecodeVinUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => GetVehicleTypesForMakeUseCase(getIt<VehicleCatalogRepository>()));
+  getIt.registerFactory(() => GetWMIsForManufacturerUseCase(getIt<VehicleCatalogRepository>()));
 
   getIt.registerFactory(
     () => AuthCubit(

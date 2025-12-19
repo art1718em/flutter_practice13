@@ -173,10 +173,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
             ],
           ),
         );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('VIN расшифрован! Заполнено: ${filledFields.join(", ")}')),
-        );
       }
     } else {
       setState(() => _isDecodingVin = false);

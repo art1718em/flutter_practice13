@@ -236,5 +236,56 @@ class VehicleTypesResponseDto {
   Map<String, dynamic> toJson() => _$VehicleTypesResponseDtoToJson(this);
 }
 
+@JsonSerializable()
+class WmiDto {
+  @JsonKey(name: 'WMI')
+  final String? wmi;
+  @JsonKey(name: 'Country')
+  final String? country;
+  @JsonKey(name: 'CreatedOn')
+  final String? createdOn;
+  @JsonKey(name: 'Name')
+  final String? name;
+  @JsonKey(name: 'VehicleType')
+  final String? vehicleType;
+
+  WmiDto({
+    this.wmi,
+    this.country,
+    this.createdOn,
+    this.name,
+    this.vehicleType,
+  });
+
+  factory WmiDto.fromJson(Map<String, dynamic> json) =>
+      _$WmiDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WmiDtoToJson(this);
+}
+
+@JsonSerializable()
+class WmiResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'SearchCriteria')
+  final String? searchCriteria;
+  @JsonKey(name: 'Results')
+  final List<WmiDto>? results;
+
+  WmiResponseDto({
+    this.count,
+    this.message,
+    this.searchCriteria,
+    this.results,
+  });
+
+  factory WmiResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$WmiResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WmiResponseDtoToJson(this);
+}
+
 
 

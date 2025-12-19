@@ -25,6 +25,11 @@ abstract class NhtsaApiClient {
   Future<VehicleTypesResponseDto> getVehicleTypesForMake(
     @Path('make') String make,
   );
+
+  @GET('/GetWMIsForManufacturer/{manufacturer}?format=json')
+  Future<WmiResponseDto> getWMIsForManufacturer(
+    @Path('manufacturer') String manufacturer,
+  );
 }
 
 

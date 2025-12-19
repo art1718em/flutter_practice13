@@ -83,6 +83,24 @@ class VehicleCatalogRepositoryImpl implements VehicleCatalogRepository {
       throw Exception('Не удалось загрузить типы транспортных средств: $e');
     }
   }
+
+  @override
+  Future<List<Wmi>> getWMIsForManufacturer(String manufacturer) async {
+    try {
+      final response = await _apiClient.getWMIsForManufacturer(manufacturer);
+      return (response.results ?? [])
+          .where((dto) => dto.wmi != null)
+          .map((dto) => Wmi(
+                code: dto.wmi!,
+                country: dto.country,
+                name: dto.name,
+                vehicleType: dto.vehicleType,
+              ))
+          .toList();
+    } catch (e) {
+      throw Exception('Не удалось загрузить WMI коды: $e');
+    }
+  }
 }
 
 

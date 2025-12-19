@@ -5,6 +5,7 @@ abstract class VehicleCatalogRepository {
   Future<List<VehicleModel>> getModelsForMake(String make);
   Future<VinDecodeResult> decodeVin(String vin);
   Future<List<VehicleType>> getVehicleTypesForMake(String make);
+  Future<List<Wmi>> getWMIsForManufacturer(String manufacturer);
 }
 
 
