@@ -45,3 +45,4 @@ Map<String, dynamic> _$CountryDtoToJson(CountryDto instance) =>
       'flags': instance.flags,
     };
 
+

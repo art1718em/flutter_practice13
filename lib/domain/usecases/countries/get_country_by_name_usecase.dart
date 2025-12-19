@@ -10,4 +10,3 @@ class GetCountryByNameUseCase {
     return _repository.getCountryByName(name);
   }
 }
-

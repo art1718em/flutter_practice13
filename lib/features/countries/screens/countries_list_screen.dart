@@ -13,12 +13,11 @@ class CountriesListScreen extends StatefulWidget {
 
 class _CountriesListScreenState extends State<CountriesListScreen> {
   final _searchController = TextEditingController();
-  bool _searchByCapital = false; // false = по стране, true = по столице
+  bool _searchByCapital = false;
 
   @override
   void initState() {
     super.initState();
-    // Загружаем все страны при открытии экрана
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<CountriesCubit>().loadAllCountries();
     });
@@ -96,7 +95,6 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                   onSelectionChanged: (Set<bool> newSelection) {
                     setState(() {
                       _searchByCapital = newSelection.first;
-                      // Очищаем поле поиска при переключении режима
                       _searchController.clear();
                     });
                   },

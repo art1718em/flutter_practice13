@@ -122,7 +122,6 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                           );
                         }
 
-                        // Сортируем по дате (новые сверху)
                         final sortedRecords = List.from(records)
                           ..sort((a, b) => b.date.compareTo(a.date));
 
@@ -225,7 +224,6 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        // Выполненные работы
                                         if (record.worksDone.isNotEmpty) ...[
                                           const Text(
                                             'Выполненные работы:',
@@ -253,7 +251,6 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                                           const SizedBox(height: 12),
                                         ],
 
-                                        // СТО
                                         if (record.serviceCenter != null) ...[
                                           Row(
                                             children: [
@@ -269,7 +266,6 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                                           const SizedBox(height: 8),
                                         ],
 
-                                        // Следующее ТО
                                         if (record.nextServiceDate != null) ...[
                                           Row(
                                             children: [
@@ -299,7 +295,6 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                                           const SizedBox(height: 8),
                                         ],
 
-                                        // Заметки
                                         if (record.notes != null && record.notes!.isNotEmpty) ...[
                                           const Text(
                                             'Заметки:',

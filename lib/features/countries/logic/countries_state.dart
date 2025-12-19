@@ -33,3 +33,4 @@ class CountriesState extends Equatable {
   List<Object?> get props => [countries, isLoading, error, selectedRegion];
 }
 
+

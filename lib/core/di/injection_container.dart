@@ -98,35 +98,6 @@ Future<void> setupDependencies() async {
     final dio = Dio();
     dio.options.connectTimeout = const Duration(seconds: 30);
     dio.options.receiveTimeout = const Duration(seconds: 30);
-    
-    // Добавляем интерцептор для логирования
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        print('🌐 REQUEST[${options.method}] => FULL URI: ${options.uri}');
-        print('🌐 QUERY PARAMS: ${options.queryParameters}');
-        return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        print('✅ RESPONSE[${response.statusCode}] => URI: ${response.requestOptions.uri}');
-        print('📦 DATA TYPE: ${response.data.runtimeType}');
-        if (response.data is List) {
-          print('📦 DATA LENGTH: ${(response.data as List).length}');
-        }
-        return handler.next(response);
-      },
-      onError: (DioException error, handler) {
-        print('❌ ERROR[${error.response?.statusCode}] => URI: ${error.requestOptions.uri}');
-        print('❌ QUERY PARAMS: ${error.requestOptions.queryParameters}');
-        print('❌ MESSAGE: ${error.message}');
-        print('❌ ERROR TYPE: ${error.type}');
-        if (error.response != null) {
-          print('❌ RESPONSE DATA TYPE: ${error.response?.data.runtimeType}');
-          print('❌ RESPONSE DATA: ${error.response?.data}');
-        }
-        return handler.next(error);
-      },
-    ));
-    
     return dio;
   });
 

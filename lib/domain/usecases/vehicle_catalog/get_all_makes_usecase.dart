@@ -10,3 +10,4 @@ class GetAllMakesUseCase {
     return repository.getAllMakes();
   }
 }
+

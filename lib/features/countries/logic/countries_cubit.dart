@@ -37,7 +37,6 @@ class CountriesCubit extends Cubit<CountriesState> {
         clearSelectedRegion: true,
       ));
     } catch (e) {
-      print('CountriesCubit: Ошибка загрузки всех стран: $e');
       final errorMessage = e.toString().replaceAll('Exception: ', '').replaceAll('DioException', 'Ошибка сети');
       emit(state.copyWith(
         isLoading: false,
@@ -66,7 +65,6 @@ class CountriesCubit extends Cubit<CountriesState> {
         clearSelectedRegion: true,
       ));
     } catch (e) {
-      print('CountriesCubit: Ошибка поиска по названию "$name": $e');
       emit(state.copyWith(
         isLoading: false,
         error: 'Страна не найдена',
@@ -94,7 +92,6 @@ class CountriesCubit extends Cubit<CountriesState> {
         clearSelectedRegion: true,
       ));
     } catch (e) {
-      print('CountriesCubit: Ошибка поиска по столице "$capital": $e');
       emit(state.copyWith(
         isLoading: false,
         error: 'Страна со столицей "$capital" не найдена',
@@ -114,7 +111,6 @@ class CountriesCubit extends Cubit<CountriesState> {
         selectedRegion: region,
       ));
     } catch (e) {
-      print('CountriesCubit: Ошибка загрузки стран региона $region: $e');
       final errorMessage = e.toString().replaceAll('Exception: ', '').replaceAll('DioException', 'Ошибка сети');
       emit(state.copyWith(
         isLoading: false,

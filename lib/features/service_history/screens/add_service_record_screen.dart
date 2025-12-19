@@ -113,7 +113,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Тип обслуживания
                   DropdownButtonFormField<ServiceType>(
                     value: _selectedType,
                     decoration: const InputDecoration(
@@ -143,7 +142,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Название
                   TextFormField(
                     controller: _titleController,
                     decoration: const InputDecoration(
@@ -161,7 +159,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Дата
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: const Icon(Icons.calendar_today),
@@ -185,7 +182,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
                   ),
                   const Divider(),
 
-                  // Пробег
                   TextFormField(
                     controller: _mileageController,
                     decoration: InputDecoration(
@@ -206,7 +202,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // СТО
                   TextFormField(
                     controller: _serviceCenterController,
                     decoration: const InputDecoration(
@@ -218,7 +213,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Выполненные работы
                   const Text(
                     'Выполненные работы',
                     style: TextStyle(
@@ -288,7 +282,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
                     ),
                   const SizedBox(height: 16),
 
-                  // Следующее ТО
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: const Icon(Icons.event_available),
@@ -328,7 +321,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
                   ),
                   const Divider(),
 
-                  // Заметки
                   TextFormField(
                     controller: _notesController,
                     decoration: const InputDecoration(
@@ -341,7 +333,6 @@ class _AddServiceRecordScreenState extends State<AddServiceRecordScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Кнопка сохранения
                   ElevatedButton(
                     onPressed: _saveForm,
                     style: ElevatedButton.styleFrom(

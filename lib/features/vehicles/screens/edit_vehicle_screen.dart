@@ -52,7 +52,6 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
     _purchaseDate = vehicle.purchaseDate;
     _selectedBrand = vehicle.brand;
 
-    // Загружаем список марок и данные для текущей марки
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<VehicleCatalogCubit>().loadAllMakes();
       if (vehicle.brand.isNotEmpty) {
@@ -60,8 +59,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
         context.read<VehicleCatalogCubit>().loadVehicleTypesForMake(vehicle.brand);
       }
     });
-    
-    // Слушаем изменения марки
+
     _brandController.addListener(() {
       final brand = _brandController.text.trim();
       if (brand.isNotEmpty && brand != _selectedBrand) {
@@ -143,7 +141,6 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Автокомплит для марки
                       BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
                         builder: (context, catalogState) {
                           final makes = catalogState.makes.map((m) => m.name).toList();
@@ -193,7 +190,6 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      // Автокомплит для модели
                       BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
                         builder: (context, catalogState) {
                           final models = catalogState.models.map((m) => m.name).toList();
@@ -237,7 +233,6 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      // Автокомплит для типа кузова
                       BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
                         builder: (context, catalogState) {
                           final types = catalogState.vehicleTypes.map((t) => t.name).toList();

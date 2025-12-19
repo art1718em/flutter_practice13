@@ -32,20 +32,16 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
   @override
   void initState() {
     super.initState();
-    // Загружаем список марок при открытии экрана
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<VehicleCatalogCubit>().loadAllMakes();
     });
-    
-    // Слушаем изменения марки для загрузки моделей и типов
+
     _brandController.addListener(() {
       final brand = _brandController.text.trim();
       if (brand.isNotEmpty && brand != _selectedBrand) {
         _selectedBrand = brand;
-        // Очищаем модель и тип при смене марки
         _modelController.clear();
         _vehicleTypeController.clear();
-        // Загружаем модели и типы для новой марки
         context.read<VehicleCatalogCubit>().loadModelsForMake(brand);
         context.read<VehicleCatalogCubit>().loadVehicleTypesForMake(brand);
       }
@@ -127,7 +123,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                     maxLength: 17,
                   ),
                   const SizedBox(height: 16),
-                  // Автокомплит для марки
                   BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
                     builder: (context, state) {
                       final makes = state.makes.map((m) => m.name).toList();
@@ -143,7 +138,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                           _brandController.text = selection;
                         },
                         fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-                          // Синхронизируем с нашим контроллером
                           if (_brandController.text.isNotEmpty && controller.text.isEmpty) {
                             controller.text = _brandController.text;
                           }
@@ -180,7 +174,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  // Автокомплит для модели
                   BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
                     builder: (context, state) {
                       final models = state.models.map((m) => m.name).toList();
@@ -226,7 +219,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  // Автокомплит для типа кузова
                   BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
                     builder: (context, state) {
                       final types = state.vehicleTypes.map((t) => t.name).toList();

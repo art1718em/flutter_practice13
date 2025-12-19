@@ -10,3 +10,4 @@ class GetVehicleTypesForMakeUseCase {
     return repository.getVehicleTypesForMake(makeName);
   }
 }
+

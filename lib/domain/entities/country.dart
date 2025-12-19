@@ -51,4 +51,3 @@ class Country extends Equatable {
         flagUrl,
       ];
 }
-

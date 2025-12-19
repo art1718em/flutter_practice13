@@ -10,3 +10,4 @@ class GetModelsForMakeUseCase {
     return repository.getModelsForMake(makeName);
   }
 }
+

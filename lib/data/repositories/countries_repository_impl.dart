@@ -9,7 +9,6 @@ class CountriesRepositoryImpl implements CountriesRepository {
   CountriesRepositoryImpl(this._apiClient);
 
   Country _mapDtoToEntity(CountryDto dto) {
-    // Парсинг валюты
     String? currency;
     String? currencySymbol;
     if (dto.currencies != null && dto.currencies!.isNotEmpty) {
@@ -19,15 +18,11 @@ class CountriesRepositoryImpl implements CountriesRepository {
           currency = firstCurrency['name'] as String?;
           currencySymbol = firstCurrency['symbol'] as String?;
         }
-      } catch (e) {
-        print('Ошибка при парсинге валюты: $e');
-      }
+      } catch (_) {}
     }
 
-    // Парсинг языков
     final languages = dto.languages?.values.map((e) => e.toString()).toList() ?? [];
 
-    // Парсинг телефонного префикса
     String? phonePrefix;
     if (dto.idd != null) {
       try {
@@ -44,12 +39,9 @@ class CountriesRepositoryImpl implements CountriesRepository {
         if (root != null && suffixes != null && suffixes.isNotEmpty) {
           phonePrefix = '$root${suffixes[0]}';
         }
-      } catch (e) {
-        print('Ошибка при парсинге телефонного префикса: $e');
-      }
+      } catch (_) {}
     }
 
-    // Парсинг столицы
     String? capital;
     if (dto.capital != null) {
       try {
@@ -58,33 +50,25 @@ class CountriesRepositoryImpl implements CountriesRepository {
         } else if (dto.capital is String) {
           capital = dto.capital as String;
         }
-      } catch (e) {
-        print('Ошибка при парсинге столицы: $e');
-      }
+      } catch (_) {}
     }
 
-    // Парсинг часовых поясов
     List<String> timezones = [];
     if (dto.timezones != null) {
       try {
         if (dto.timezones is List) {
           timezones = (dto.timezones as List).map((e) => e.toString()).toList();
         }
-      } catch (e) {
-        print('Ошибка при парсинге часовых поясов: $e');
-      }
+      } catch (_) {}
     }
 
-    // Парсинг границ
     List<String> borders = [];
     if (dto.borders != null) {
       try {
         if (dto.borders is List) {
           borders = (dto.borders as List).map((e) => e.toString()).toList();
         }
-      } catch (e) {
-        print('Ошибка при парсинге границ: $e');
-      }
+      } catch (_) {}
     }
 
     return Country(
@@ -111,7 +95,6 @@ class CountriesRepositoryImpl implements CountriesRepository {
       final response = await _apiClient.getAllCountries();
       return response.map(_mapDtoToEntity).toList();
     } catch (e) {
-      print('Ошибка при загрузке списка стран: $e');
       rethrow;
     }
   }
@@ -122,7 +105,6 @@ class CountriesRepositoryImpl implements CountriesRepository {
       final response = await _apiClient.getCountryByName(name);
       return response.map(_mapDtoToEntity).toList();
     } catch (e) {
-      print('Ошибка при поиске страны по имени "$name": $e');
       rethrow;
     }
   }
@@ -133,7 +115,6 @@ class CountriesRepositoryImpl implements CountriesRepository {
       final response = await _apiClient.getCountryByCode(code);
       return _mapDtoToEntity(response);
     } catch (e) {
-      print('Ошибка при загрузке страны по коду "$code": $e');
       rethrow;
     }
   }
@@ -144,7 +125,6 @@ class CountriesRepositoryImpl implements CountriesRepository {
       final response = await _apiClient.getCountryByCapital(capital);
       return response.map(_mapDtoToEntity).toList();
     } catch (e) {
-      print('Ошибка при поиске страны по столице "$capital": $e');
       rethrow;
     }
   }
@@ -155,7 +135,6 @@ class CountriesRepositoryImpl implements CountriesRepository {
       final response = await _apiClient.getCountriesByRegion(region);
       return response.map(_mapDtoToEntity).toList();
     } catch (e) {
-      print('Ошибка при загрузке стран региона "$region": $e');
       rethrow;
     }
   }
