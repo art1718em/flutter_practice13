@@ -110,6 +110,7 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
+                    _buildAllCountriesChip(context),
                     _buildRegionChip(context, 'Европа', 'Europe'),
                     _buildRegionChip(context, 'Азия', 'Asia'),
                     _buildRegionChip(context, 'Африка', 'Africa'),
@@ -259,6 +260,21 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAllCountriesChip(BuildContext context) {
+    final isSelected = context.watch<CountriesCubit>().state.selectedRegion == null;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: FilterChip(
+        label: const Text('Все'),
+        selected: isSelected,
+        onSelected: (_) {
+          context.read<CountriesCubit>().loadAllCountries();
+        },
       ),
     );
   }

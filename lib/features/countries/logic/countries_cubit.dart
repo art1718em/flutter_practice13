@@ -27,14 +27,14 @@ class CountriesCubit extends Cubit<CountriesState> {
         super(const CountriesState());
 
   Future<void> loadAllCountries() async {
-    emit(state.copyWith(isLoading: true, error: null));
+    emit(state.copyWith(isLoading: true, error: null, clearSelectedRegion: true));
     try {
       final countries = await _getAllCountriesUseCase();
       countries.sort((a, b) => a.name.compareTo(b.name));
       emit(state.copyWith(
         countries: countries,
         isLoading: false,
-        selectedRegion: null,
+        clearSelectedRegion: true,
       ));
     } catch (e) {
       print('CountriesCubit: Ошибка загрузки всех стран: $e');
@@ -42,6 +42,7 @@ class CountriesCubit extends Cubit<CountriesState> {
       emit(state.copyWith(
         isLoading: false,
         error: 'Не удалось загрузить страны.\n$errorMessage',
+        clearSelectedRegion: true,
       ));
     }
   }
@@ -51,24 +52,25 @@ class CountriesCubit extends Cubit<CountriesState> {
       emit(state.copyWith(
         countries: [],
         isLoading: false,
-        selectedRegion: null,
+        clearSelectedRegion: true,
       ));
       return;
     }
 
-    emit(state.copyWith(isLoading: true, error: null));
+    emit(state.copyWith(isLoading: true, error: null, clearSelectedRegion: true));
     try {
       final countries = await _getCountryByNameUseCase(name);
       emit(state.copyWith(
         countries: countries,
         isLoading: false,
-        selectedRegion: null,
+        clearSelectedRegion: true,
       ));
     } catch (e) {
       print('CountriesCubit: Ошибка поиска по названию "$name": $e');
       emit(state.copyWith(
         isLoading: false,
         error: 'Страна не найдена',
+        clearSelectedRegion: true,
       ));
     }
   }
@@ -78,24 +80,25 @@ class CountriesCubit extends Cubit<CountriesState> {
       emit(state.copyWith(
         countries: [],
         isLoading: false,
-        selectedRegion: null,
+        clearSelectedRegion: true,
       ));
       return;
     }
 
-    emit(state.copyWith(isLoading: true, error: null));
+    emit(state.copyWith(isLoading: true, error: null, clearSelectedRegion: true));
     try {
       final countries = await _getCountryByCapitalUseCase(capital);
       emit(state.copyWith(
         countries: countries,
         isLoading: false,
-        selectedRegion: null,
+        clearSelectedRegion: true,
       ));
     } catch (e) {
       print('CountriesCubit: Ошибка поиска по столице "$capital": $e');
       emit(state.copyWith(
         isLoading: false,
         error: 'Страна со столицей "$capital" не найдена',
+        clearSelectedRegion: true,
       ));
     }
   }

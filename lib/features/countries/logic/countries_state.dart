@@ -19,12 +19,13 @@ class CountriesState extends Equatable {
     bool? isLoading,
     String? error,
     String? selectedRegion,
+    bool clearSelectedRegion = false,
   }) {
     return CountriesState(
       countries: countries ?? this.countries,
       isLoading: isLoading ?? this.isLoading,
       error: error,
-      selectedRegion: selectedRegion ?? this.selectedRegion,
+      selectedRegion: clearSelectedRegion ? null : (selectedRegion ?? this.selectedRegion),
     );
   }
 
