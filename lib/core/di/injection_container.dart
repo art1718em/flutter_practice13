@@ -1,8 +1,12 @@
 import 'package:get_it/get_it.dart';
+import 'package:dio/dio.dart';
 
 import 'package:flutter_practice13/core/storage/database_helper.dart';
 import 'package:flutter_practice13/core/storage/preferences_helper.dart';
 import 'package:flutter_practice13/core/storage/secure_storage_helper.dart';
+import 'package:flutter_practice13/data/datasources/remote/nhtsa/nhtsa_api_client.dart';
+import 'package:flutter_practice13/data/repositories/vehicle_catalog_repository_impl.dart';
+import 'package:flutter_practice13/domain/repositories/vehicle_catalog_repository.dart';
 import 'package:flutter_practice13/data/datasources/auth/auth_local_datasource.dart';
 import 'package:flutter_practice13/data/datasources/vehicles/vehicles_local_datasource.dart';
 import 'package:flutter_practice13/data/datasources/expenses/expenses_local_datasource.dart';
@@ -53,6 +57,10 @@ import 'package:flutter_practice13/domain/usecases/profile/get_profile_usecase.d
 import 'package:flutter_practice13/domain/usecases/profile/update_profile_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/settings/get_settings_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/settings/update_settings_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_all_makes_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_models_for_make_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/decode_vin_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_types_for_make_usecase.dart';
 
 import 'package:flutter_practice13/features/auth/logic/auth_cubit.dart';
 import 'package:flutter_practice13/features/vehicles/logic/vehicles_cubit.dart';
@@ -62,6 +70,7 @@ import 'package:flutter_practice13/features/tips/logic/tips_cubit.dart';
 import 'package:flutter_practice13/features/favorite_places/logic/favorite_places_cubit.dart';
 import 'package:flutter_practice13/features/profile/logic/profile_cubit.dart';
 import 'package:flutter_practice13/features/settings/logic/settings_cubit.dart';
+import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -73,6 +82,21 @@ Future<void> setupDependencies() async {
 
   final secureStorageHelper = await SecureStorageHelper.getInstance();
   getIt.registerSingleton<SecureStorageHelper>(secureStorageHelper);
+
+  getIt.registerLazySingleton<Dio>(() {
+    final dio = Dio();
+    dio.options.connectTimeout = const Duration(seconds: 30);
+    dio.options.receiveTimeout = const Duration(seconds: 30);
+    return dio;
+  });
+
+  getIt.registerLazySingleton<NhtsaApiClient>(
+    () => NhtsaApiClient(getIt<Dio>()),
+  );
+
+  getIt.registerLazySingleton<VehicleCatalogRepository>(
+    () => VehicleCatalogRepositoryImpl(getIt<NhtsaApiClient>()),
+  );
 
   getIt.registerLazySingleton<AuthLocalDataSource>(
     () => AuthLocalDataSource(getIt<SecureStorageHelper>()),
@@ -153,6 +177,11 @@ Future<void> setupDependencies() async {
   getIt.registerFactory(() => GetSettingsUseCase(getIt<SettingsRepository>()));
   getIt.registerFactory(() => UpdateSettingsUseCase(getIt<SettingsRepository>()));
 
+  getIt.registerFactory(() => GetAllMakesUseCase(getIt<VehicleCatalogRepository>()));
+  getIt.registerFactory(() => GetModelsForMakeUseCase(getIt<VehicleCatalogRepository>()));
+  getIt.registerFactory(() => DecodeVinUseCase(getIt<VehicleCatalogRepository>()));
+  getIt.registerFactory(() => GetVehicleTypesForMakeUseCase(getIt<VehicleCatalogRepository>()));
+
   getIt.registerFactory(
     () => AuthCubit(
       loginUseCase: getIt<LoginUseCase>(),
@@ -213,6 +242,15 @@ Future<void> setupDependencies() async {
     () => SettingsCubit(
       getSettingsUseCase: getIt<GetSettingsUseCase>(),
       updateSettingsUseCase: getIt<UpdateSettingsUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => VehicleCatalogCubit(
+      getAllMakesUseCase: getIt<GetAllMakesUseCase>(),
+      getModelsForMakeUseCase: getIt<GetModelsForMakeUseCase>(),
+      decodeVinUseCase: getIt<DecodeVinUseCase>(),
+      getVehicleTypesForMakeUseCase: getIt<GetVehicleTypesForMakeUseCase>(),
     ),
   );
 }

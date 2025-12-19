@@ -41,6 +41,7 @@ class VehiclesCubit extends Cubit<VehiclesState> {
     String? color,
     int? mileage,
     DateTime? purchaseDate,
+    String? vehicleType,
   }) async {
     final newVehicle = VehicleModel(
       id: '',
@@ -53,6 +54,7 @@ class VehiclesCubit extends Cubit<VehiclesState> {
       mileage: mileage,
       purchaseDate: purchaseDate,
       isActive: true,
+      vehicleType: vehicleType,
     );
 
     try {

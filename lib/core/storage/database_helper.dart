@@ -51,7 +51,8 @@ class DatabaseHelper {
         color TEXT,
         mileage INTEGER,
         purchaseDate TEXT,
-        isActive INTEGER NOT NULL DEFAULT 1
+        isActive INTEGER NOT NULL DEFAULT 1,
+        vehicleType TEXT
       )
     ''');
 

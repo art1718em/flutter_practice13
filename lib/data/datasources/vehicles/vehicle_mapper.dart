@@ -14,6 +14,7 @@ extension VehicleMapper on VehicleDto {
       mileage: mileage,
       purchaseDate: purchaseDate != null ? DateTime.parse(purchaseDate!) : null,
       isActive: isActive,
+      vehicleType: vehicleType,
     );
   }
 }
@@ -31,6 +32,7 @@ extension VehicleModelMapper on VehicleModel {
       mileage: mileage,
       purchaseDate: purchaseDate?.toIso8601String(),
       isActive: isActive,
+      vehicleType: vehicleType,
     );
   }
 }

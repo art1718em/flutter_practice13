@@ -1,0 +1,240 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'nhtsa_dto.g.dart';
+
+@JsonSerializable()
+class ManufacturerDto {
+  @JsonKey(name: 'Country')
+  final String? country;
+  @JsonKey(name: 'Mfr_CommonName')
+  final String? commonName;
+  @JsonKey(name: 'Mfr_ID')
+  final int? id;
+  @JsonKey(name: 'Mfr_Name')
+  final String? name;
+
+  ManufacturerDto({
+    this.country,
+    this.commonName,
+    this.id,
+    this.name,
+  });
+
+  factory ManufacturerDto.fromJson(Map<String, dynamic> json) =>
+      _$ManufacturerDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ManufacturerDtoToJson(this);
+}
+
+@JsonSerializable()
+class ManufacturersResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'SearchCriteria')
+  final String? searchCriteria;
+  @JsonKey(name: 'Results')
+  final List<ManufacturerDto>? results;
+
+  ManufacturersResponseDto({
+    this.count,
+    this.message,
+    this.searchCriteria,
+    this.results,
+  });
+
+  factory ManufacturersResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$ManufacturersResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ManufacturersResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class MakeDto {
+  @JsonKey(name: 'Make_ID')
+  final int? makeId;
+  @JsonKey(name: 'Make_Name')
+  final String? makeName;
+  @JsonKey(name: 'Mfr_Name')
+  final String? mfrName;
+  @JsonKey(name: 'Mfr_ID')
+  final int? mfrId;
+
+  MakeDto({
+    this.makeId,
+    this.makeName,
+    this.mfrName,
+    this.mfrId,
+  });
+
+  factory MakeDto.fromJson(Map<String, dynamic> json) =>
+      _$MakeDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MakeDtoToJson(this);
+}
+
+@JsonSerializable()
+class MakesResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'SearchCriteria')
+  final String? searchCriteria;
+  @JsonKey(name: 'Results')
+  final List<MakeDto>? results;
+
+  MakesResponseDto({
+    this.count,
+    this.message,
+    this.searchCriteria,
+    this.results,
+  });
+
+  factory MakesResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$MakesResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MakesResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ModelDto {
+  @JsonKey(name: 'Make_ID')
+  final int? makeId;
+  @JsonKey(name: 'Make_Name')
+  final String? makeName;
+  @JsonKey(name: 'Model_ID')
+  final int? modelId;
+  @JsonKey(name: 'Model_Name')
+  final String? modelName;
+
+  ModelDto({
+    this.makeId,
+    this.makeName,
+    this.modelId,
+    this.modelName,
+  });
+
+  factory ModelDto.fromJson(Map<String, dynamic> json) =>
+      _$ModelDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ModelDtoToJson(this);
+}
+
+@JsonSerializable()
+class ModelsResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'SearchCriteria')
+  final String? searchCriteria;
+  @JsonKey(name: 'Results')
+  final List<ModelDto>? results;
+
+  ModelsResponseDto({
+    this.count,
+    this.message,
+    this.searchCriteria,
+    this.results,
+  });
+
+  factory ModelsResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$ModelsResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ModelsResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class VinDecodeDto {
+  @JsonKey(name: 'Value')
+  final String? value;
+  @JsonKey(name: 'ValueId')
+  final String? valueId;
+  @JsonKey(name: 'Variable')
+  final String? variable;
+  @JsonKey(name: 'VariableId')
+  final int? variableId;
+
+  VinDecodeDto({
+    this.value,
+    this.valueId,
+    this.variable,
+    this.variableId,
+  });
+
+  factory VinDecodeDto.fromJson(Map<String, dynamic> json) =>
+      _$VinDecodeDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VinDecodeDtoToJson(this);
+}
+
+@JsonSerializable()
+class VinDecodeResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'SearchCriteria')
+  final String? searchCriteria;
+  @JsonKey(name: 'Results')
+  final List<VinDecodeDto>? results;
+
+  VinDecodeResponseDto({
+    this.count,
+    this.message,
+    this.searchCriteria,
+    this.results,
+  });
+
+  factory VinDecodeResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$VinDecodeResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VinDecodeResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class VehicleTypeDto {
+  @JsonKey(name: 'VehicleTypeId')
+  final int? vehicleTypeId;
+  @JsonKey(name: 'VehicleTypeName')
+  final String? vehicleTypeName;
+
+  VehicleTypeDto({
+    this.vehicleTypeId,
+    this.vehicleTypeName,
+  });
+
+  factory VehicleTypeDto.fromJson(Map<String, dynamic> json) =>
+      _$VehicleTypeDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VehicleTypeDtoToJson(this);
+}
+
+@JsonSerializable()
+class VehicleTypesResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'SearchCriteria')
+  final String? searchCriteria;
+  @JsonKey(name: 'Results')
+  final List<VehicleTypeDto>? results;
+
+  VehicleTypesResponseDto({
+    this.count,
+    this.message,
+    this.searchCriteria,
+    this.results,
+  });
+
+  factory VehicleTypesResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$VehicleTypesResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VehicleTypesResponseDtoToJson(this);
+}
+
+
+

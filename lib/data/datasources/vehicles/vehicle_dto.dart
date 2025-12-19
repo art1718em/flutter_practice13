@@ -9,6 +9,7 @@ class VehicleDto {
   final int? mileage;
   final String? purchaseDate;
   final bool isActive;
+  final String? vehicleType;
 
   VehicleDto({
     required this.id,
@@ -21,6 +22,7 @@ class VehicleDto {
     this.mileage,
     this.purchaseDate,
     required this.isActive,
+    this.vehicleType,
   });
 
   Map<String, dynamic> toJson() => {
@@ -34,6 +36,7 @@ class VehicleDto {
     'mileage': mileage,
     'purchaseDate': purchaseDate,
     'isActive': isActive,
+    'vehicleType': vehicleType,
   };
 
   factory VehicleDto.fromJson(Map<String, dynamic> json) => VehicleDto(
@@ -47,5 +50,6 @@ class VehicleDto {
     mileage: json['mileage'] as int?,
     purchaseDate: json['purchaseDate'] as String?,
     isActive: json['isActive'] as bool,
+    vehicleType: json['vehicleType'] as String?,
   );
 }

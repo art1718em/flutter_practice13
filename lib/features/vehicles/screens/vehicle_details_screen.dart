@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -6,9 +7,10 @@ import 'package:flutter_practice13/features/settings/logic/settings_cubit.dart';
 import 'package:flutter_practice13/features/settings/logic/settings_state.dart';
 import 'package:flutter_practice13/features/vehicles/logic/vehicles_cubit.dart';
 import 'package:flutter_practice13/features/vehicles/logic/vehicles_state.dart';
+import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_cubit.dart';
 import 'package:flutter_practice13/shared/utils/format_helpers.dart';
 
-class VehicleDetailsScreen extends StatelessWidget {
+class VehicleDetailsScreen extends StatefulWidget {
   final String vehicleId;
 
   const VehicleDetailsScreen({
@@ -16,6 +18,11 @@ class VehicleDetailsScreen extends StatelessWidget {
     required this.vehicleId,
   });
 
+  @override
+  State<VehicleDetailsScreen> createState() => _VehicleDetailsScreenState();
+}
+
+class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, SettingsState>(
@@ -25,7 +32,7 @@ class VehicleDetailsScreen extends StatelessWidget {
         return BlocBuilder<VehiclesCubit, VehiclesState>(
           builder: (context, state) {
             final vehicle = state.vehicles.firstWhere(
-              (v) => v.id == vehicleId,
+              (v) => v.id == widget.vehicleId,
               orElse: () => state.vehicles.first,
             );
 
@@ -91,6 +98,20 @@ class VehicleDetailsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (vehicle.vehicleType != null) ...[
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.category),
+                    title: const Text('Тип кузова'),
+                    trailing: Text(
+                      vehicle.vehicleType!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
                 if (vehicle.vin != null) ...[
                   const Divider(),
                   ListTile(

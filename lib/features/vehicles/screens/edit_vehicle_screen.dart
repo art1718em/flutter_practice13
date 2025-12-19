@@ -28,6 +28,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
   late TextEditingController _licensePlateController;
   late TextEditingController _colorController;
   late TextEditingController _mileageController;
+  late TextEditingController _vehicleTypeController;
   DateTime? _purchaseDate;
 
   @override
@@ -44,6 +45,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
     _licensePlateController = TextEditingController(text: vehicle.licensePlate ?? '');
     _colorController = TextEditingController(text: vehicle.color ?? '');
     _mileageController = TextEditingController(text: vehicle.mileage?.toString() ?? '');
+    _vehicleTypeController = TextEditingController(text: vehicle.vehicleType ?? '');
     _purchaseDate = vehicle.purchaseDate;
   }
 
@@ -56,6 +58,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
     _licensePlateController.dispose();
     _colorController.dispose();
     _mileageController.dispose();
+    _vehicleTypeController.dispose();
     super.dispose();
   }
 
@@ -78,6 +81,9 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
             ? int.tryParse(_mileageController.text)
             : null,
         purchaseDate: _purchaseDate,
+        vehicleType: _vehicleTypeController.text.trim().isNotEmpty 
+            ? _vehicleTypeController.text.trim() 
+            : null,
       );
 
       context.read<VehiclesCubit>().updateVehicle(updatedVehicle);
@@ -142,6 +148,15 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
                           }
                           return null;
                         },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _vehicleTypeController,
+                        decoration: const InputDecoration(
+                          labelText: 'Тип кузова',
+                          prefixIcon: Icon(Icons.category),
+                          border: OutlineInputBorder(),
+                        ),
                       ),
                       const SizedBox(height: 16),
                       TextFormField(

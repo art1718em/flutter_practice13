@@ -11,6 +11,7 @@ class VehicleModel extends Equatable {
   final int? mileage;
   final DateTime? purchaseDate;
   final bool isActive;
+  final String? vehicleType;
 
   const VehicleModel({
     required this.id,
@@ -23,6 +24,7 @@ class VehicleModel extends Equatable {
     this.mileage,
     this.purchaseDate,
     this.isActive = false,
+    this.vehicleType,
   });
 
   VehicleModel copyWith({
@@ -36,6 +38,7 @@ class VehicleModel extends Equatable {
     int? mileage,
     DateTime? purchaseDate,
     bool? isActive,
+    String? vehicleType,
   }) {
     return VehicleModel(
       id: id ?? this.id,
@@ -48,6 +51,7 @@ class VehicleModel extends Equatable {
       mileage: mileage ?? this.mileage,
       purchaseDate: purchaseDate ?? this.purchaseDate,
       isActive: isActive ?? this.isActive,
+      vehicleType: vehicleType ?? this.vehicleType,
     );
   }
 
@@ -63,5 +67,6 @@ class VehicleModel extends Equatable {
         mileage,
         purchaseDate,
         isActive,
+        vehicleType,
       ];
 }

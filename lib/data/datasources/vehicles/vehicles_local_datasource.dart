@@ -75,6 +75,7 @@ class VehiclesLocalDataSource {
       mileage: vehicle.mileage,
       purchaseDate: vehicle.purchaseDate,
       isActive: true,
+      vehicleType: vehicle.vehicleType,
     );
 
     final json = newVehicle.toDto().toJson();
