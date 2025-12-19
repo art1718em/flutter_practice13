@@ -64,51 +64,6 @@ class VehicleType extends Equatable {
   List<Object?> get props => [id, name];
 }
 
-class VinDecodeResult extends Equatable {
-  final String vin;
-  final Map<String, String> attributes;
-
-  const VinDecodeResult({
-    required this.vin,
-    required this.attributes,
-  });
-
-  String? getAttribute(String key) => attributes[key];
-
-  @override
-  List<Object?> get props => [vin, attributes];
-}
-
-class Wmi extends Equatable {
-  final String code;
-  final String? country;
-  final String? name;
-  final String? vehicleType;
-
-  const Wmi({
-    required this.code,
-    this.country,
-    this.name,
-    this.vehicleType,
-  });
-
-  @override
-  List<Object?> get props => [code, country, name, vehicleType];
-}
-
-class VehicleSpecification extends Equatable {
-  final String name;
-  final String value;
-
-  const VehicleSpecification({
-    required this.name,
-    required this.value,
-  });
-
-  @override
-  List<Object?> get props => [name, value];
-}
-
 class VehicleVariable extends Equatable {
   final int id;
   final String name;

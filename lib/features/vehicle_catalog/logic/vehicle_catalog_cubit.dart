@@ -1,24 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_all_makes_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_models_for_make_usecase.dart';
-import 'package:flutter_practice13/domain/usecases/vehicle_catalog/decode_vin_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_types_for_make_usecase.dart';
 import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_state.dart';
 
 class VehicleCatalogCubit extends Cubit<VehicleCatalogState> {
   final GetAllMakesUseCase _getAllMakesUseCase;
   final GetModelsForMakeUseCase _getModelsForMakeUseCase;
-  final DecodeVinUseCase _decodeVinUseCase;
   final GetVehicleTypesForMakeUseCase _getVehicleTypesForMakeUseCase;
 
   VehicleCatalogCubit({
     required GetAllMakesUseCase getAllMakesUseCase,
     required GetModelsForMakeUseCase getModelsForMakeUseCase,
-    required DecodeVinUseCase decodeVinUseCase,
     required GetVehicleTypesForMakeUseCase getVehicleTypesForMakeUseCase,
   })  : _getAllMakesUseCase = getAllMakesUseCase,
         _getModelsForMakeUseCase = getModelsForMakeUseCase,
-        _decodeVinUseCase = decodeVinUseCase,
         _getVehicleTypesForMakeUseCase = getVehicleTypesForMakeUseCase,
         super(const VehicleCatalogState());
 
@@ -50,22 +46,6 @@ class VehicleCatalogCubit extends Cubit<VehicleCatalogState> {
       emit(state.copyWith(
         isLoading: false,
         error: 'Не удалось загрузить модели: $e',
-      ));
-    }
-  }
-
-  Future<void> decodeVin(String vin) async {
-    emit(state.copyWith(isLoading: true, error: null));
-    try {
-      final result = await _decodeVinUseCase(vin);
-      emit(state.copyWith(
-        vinDecodeResult: result,
-        isLoading: false,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        error: 'Не удалось декодировать VIN: $e',
       ));
     }
   }

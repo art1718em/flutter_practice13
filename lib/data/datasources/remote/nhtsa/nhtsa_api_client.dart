@@ -21,23 +21,6 @@ abstract class NhtsaApiClient {
     @Path('makeName') String makeName,
   );
 
-  @GET('/DecodeVin/{vin}?format=json')
-  Future<VinDecodeResponseDto> decodeVin(
-    @Path('vin') String vin,
-  );
-
-  @GET('/GetWMIsForManufacturer/{manufacturer}?format=json')
-  Future<WmiResponseDto> getWMIsForManufacturer(
-    @Path('manufacturer') String manufacturer,
-  );
-
-  @GET('/GetCanadianVehicleSpecifications/?year={year}&make={make}&model={model}&format=json')
-  Future<CanadianSpecResponseDto> getCanadianVehicleSpecifications(
-    @Query('year') int year,
-    @Query('make') String make,
-    @Query('model') String model,
-  );
-
   @GET('/GetVehicleVariableList?format=json')
   Future<VehicleVariableListResponseDto> getVehicleVariableList();
 

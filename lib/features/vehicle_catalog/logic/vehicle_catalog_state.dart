@@ -5,7 +5,6 @@ class VehicleCatalogState extends Equatable {
   final List<VehicleMake> makes;
   final List<VehicleModel> models;
   final List<VehicleType> vehicleTypes;
-  final VinDecodeResult? vinDecodeResult;
   final bool isLoading;
   final String? error;
 
@@ -13,7 +12,6 @@ class VehicleCatalogState extends Equatable {
     this.makes = const [],
     this.models = const [],
     this.vehicleTypes = const [],
-    this.vinDecodeResult,
     this.isLoading = false,
     this.error,
   });
@@ -22,7 +20,6 @@ class VehicleCatalogState extends Equatable {
     List<VehicleMake>? makes,
     List<VehicleModel>? models,
     List<VehicleType>? vehicleTypes,
-    VinDecodeResult? vinDecodeResult,
     bool? isLoading,
     String? error,
   }) {
@@ -30,7 +27,6 @@ class VehicleCatalogState extends Equatable {
       makes: makes ?? this.makes,
       models: models ?? this.models,
       vehicleTypes: vehicleTypes ?? this.vehicleTypes,
-      vinDecodeResult: vinDecodeResult ?? this.vinDecodeResult,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
     );
@@ -45,7 +41,6 @@ class VehicleCatalogState extends Equatable {
         makes,
         models,
         vehicleTypes,
-        vinDecodeResult,
         isLoading,
         error,
       ];
