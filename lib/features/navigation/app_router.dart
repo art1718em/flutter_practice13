@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_practice13/core/di/injection_container.dart';
 import 'package:flutter_practice13/features/auth/screens/splash_screen.dart';
 import 'package:flutter_practice13/features/auth/screens/login_screen.dart';
 import 'package:flutter_practice13/features/auth/screens/register_screen.dart';
@@ -20,6 +22,7 @@ import 'package:flutter_practice13/features/reference/screens/reference_menu_scr
 import 'package:flutter_practice13/features/vehicle_reference/screens/vehicle_reference_screen.dart';
 import 'package:flutter_practice13/features/countries/screens/countries_list_screen.dart';
 import 'package:flutter_practice13/features/countries/screens/country_details_screen.dart';
+import 'package:flutter_practice13/features/countries/logic/country_details_cubit.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
@@ -141,7 +144,10 @@ final router = GoRouter(
               path: ':code',
               builder: (context, state) {
                 final code = state.pathParameters['code']!;
-                return CountryDetailsScreen(countryCode: code);
+                return BlocProvider(
+                  create: (context) => getIt<CountryDetailsCubit>(),
+                  child: CountryDetailsScreen(countryCode: code),
+                );
               },
             ),
           ],

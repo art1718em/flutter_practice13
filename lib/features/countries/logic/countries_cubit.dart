@@ -9,7 +9,6 @@ import 'package:flutter_practice13/features/countries/logic/countries_state.dart
 class CountriesCubit extends Cubit<CountriesState> {
   final GetAllCountriesUseCase _getAllCountriesUseCase;
   final GetCountryByNameUseCase _getCountryByNameUseCase;
-  final GetCountryByCodeUseCase _getCountryByCodeUseCase;
   final GetCountryByCapitalUseCase _getCountryByCapitalUseCase;
   final GetCountriesByRegionUseCase _getCountriesByRegionUseCase;
 
@@ -21,7 +20,6 @@ class CountriesCubit extends Cubit<CountriesState> {
     required GetCountriesByRegionUseCase getCountriesByRegionUseCase,
   })  : _getAllCountriesUseCase = getAllCountriesUseCase,
         _getCountryByNameUseCase = getCountryByNameUseCase,
-        _getCountryByCodeUseCase = getCountryByCodeUseCase,
         _getCountryByCapitalUseCase = getCountryByCapitalUseCase,
         _getCountriesByRegionUseCase = getCountriesByRegionUseCase,
         super(const CountriesState());

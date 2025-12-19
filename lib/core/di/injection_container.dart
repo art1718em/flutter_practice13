@@ -84,6 +84,7 @@ import 'package:flutter_practice13/features/settings/logic/settings_cubit.dart';
 import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_cubit.dart';
 import 'package:flutter_practice13/features/vehicle_reference/logic/vehicle_reference_cubit.dart';
 import 'package:flutter_practice13/features/countries/logic/countries_cubit.dart';
+import 'package:flutter_practice13/features/countries/logic/country_details_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -303,6 +304,12 @@ Future<void> setupDependencies() async {
       getCountryByCodeUseCase: getIt<GetCountryByCodeUseCase>(),
       getCountryByCapitalUseCase: getIt<GetCountryByCapitalUseCase>(),
       getCountriesByRegionUseCase: getIt<GetCountriesByRegionUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => CountryDetailsCubit(
+      getCountryByCodeUseCase: getIt<GetCountryByCodeUseCase>(),
     ),
   );
 }
