@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:flutter_practice13/data/datasources/remote/countries/countries_dto.dart';
+import 'countries_dto.dart';
 
 part 'countries_api_client.g.dart';
 

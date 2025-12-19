@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:flutter_practice13/data/datasources/remote/nhtsa/nhtsa_dto.dart';
+import 'nhtsa_dto.dart';
 
 part 'nhtsa_api_client.g.dart';
 
