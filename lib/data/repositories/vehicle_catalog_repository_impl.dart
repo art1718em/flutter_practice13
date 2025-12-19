@@ -8,46 +8,6 @@ class VehicleCatalogRepositoryImpl implements VehicleCatalogRepository {
   VehicleCatalogRepositoryImpl(this._apiClient);
 
   @override
-  Future<List<VehicleMake>> getAllMakes() async {
-    try {
-      final response = await _apiClient.getAllMakes();
-      return (response.results ?? [])
-          .where((dto) => dto.makeId != null && dto.makeName != null)
-          .map((dto) => VehicleMake(
-                id: dto.makeId!,
-                name: dto.makeName!,
-                manufacturerName: dto.mfrName,
-                manufacturerId: dto.mfrId,
-              ))
-          .toList();
-    } catch (e) {
-      throw Exception('Не удалось загрузить марки: $e');
-    }
-  }
-
-  @override
-  Future<List<VehicleModel>> getModelsForMake(String make) async {
-    try {
-      final response = await _apiClient.getModelsForMake(make);
-      return (response.results ?? [])
-          .where((dto) =>
-              dto.modelId != null &&
-              dto.modelName != null &&
-              dto.makeId != null &&
-              dto.makeName != null)
-          .map((dto) => VehicleModel(
-                id: dto.modelId!,
-                name: dto.modelName!,
-                makeId: dto.makeId!,
-                makeName: dto.makeName!,
-              ))
-          .toList();
-    } catch (e) {
-      throw Exception('Не удалось загрузить модели: $e');
-    }
-  }
-
-  @override
   Future<VinDecodeResult> decodeVin(String vin) async {
     try {
       final response = await _apiClient.decodeVin(vin);
@@ -65,22 +25,6 @@ class VehicleCatalogRepositoryImpl implements VehicleCatalogRepository {
       );
     } catch (e) {
       throw Exception('Не удалось декодировать VIN: $e');
-    }
-  }
-
-  @override
-  Future<List<VehicleType>> getVehicleTypesForMake(String make) async {
-    try {
-      final response = await _apiClient.getVehicleTypesForMake(make);
-      return (response.results ?? [])
-          .where((dto) => dto.vehicleTypeId != null && dto.vehicleTypeName != null)
-          .map((dto) => VehicleType(
-                id: dto.vehicleTypeId!,
-                name: dto.vehicleTypeName!,
-              ))
-          .toList();
-    } catch (e) {
-      throw Exception('Не удалось загрузить типы транспортных средств: $e');
     }
   }
 

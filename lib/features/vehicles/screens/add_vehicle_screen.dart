@@ -6,7 +6,6 @@ import 'package:flutter_practice13/features/settings/logic/settings_state.dart';
 import 'package:flutter_practice13/core/models/app_settings_model.dart';
 import 'package:flutter_practice13/features/vehicles/logic/vehicles_cubit.dart';
 import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_cubit.dart';
-import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_state.dart';
 
 class AddVehicleScreen extends StatefulWidget {
   const AddVehicleScreen({super.key});
@@ -27,15 +26,11 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
   final _vehicleTypeController = TextEditingController();
   DateTime? _purchaseDate;
 
-  String? _selectedMake;
   bool _isDecodingVin = false;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      context.read<VehicleCatalogCubit>().loadAllMakes();
-    });
   }
 
   @override
@@ -123,7 +118,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
         
         if (make != null && make.isNotEmpty) {
           _brandController.text = make;
-          _selectedMake = make;
         }
         if (model != null && model.isNotEmpty) {
           _modelController.text = model;
@@ -132,10 +126,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
           _yearController.text = year;
         }
       });
-
-      if (make != null && make.isNotEmpty) {
-        context.read<VehicleCatalogCubit>().loadModelsForMake(make);
-      }
 
       final filledFields = <String>[];
       if (make != null && make.isNotEmpty) filledFields.add('Марка');
@@ -257,155 +247,43 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                     maxLength: 17,
                   ),
                   const SizedBox(height: 16),
-                  BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
-                    builder: (context, catalogState) {
-                      return Autocomplete<String>(
-                        optionsBuilder: (textEditingValue) {
-                          if (textEditingValue.text.isEmpty) {
-                            return catalogState.makes.map((m) => m.name);
-                          }
-                          return catalogState.makes
-                              .where((m) => m.name.toLowerCase().contains(textEditingValue.text.toLowerCase()))
-                              .map((m) => m.name);
-                        },
-                        onSelected: (selection) {
-                          _brandController.text = selection;
-                          setState(() {
-                            _selectedMake = selection;
-                          });
-                          context.read<VehicleCatalogCubit>().loadModelsForMake(selection);
-                          context.read<VehicleCatalogCubit>().loadVehicleTypesForMake(selection);
-                        },
-                        fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
-                          if (_brandController.text.isNotEmpty && controller.text != _brandController.text) {
-                            controller.text = _brandController.text;
-                          }
-                          return TextFormField(
-                            controller: controller,
-                            focusNode: focusNode,
-                            decoration: const InputDecoration(
-                              labelText: 'Марка *',
-                              prefixIcon: Icon(Icons.directions_car),
-                              border: OutlineInputBorder(),
-                              hintText: 'Начните вводить марку',
-                            ),
-                            onChanged: (value) {
-                              _brandController.text = value;
-                              if (value.isNotEmpty) {
-                                setState(() {
-                                  _selectedMake = value;
-                                });
-                                context.read<VehicleCatalogCubit>().loadModelsForMake(value);
-                                context.read<VehicleCatalogCubit>().loadVehicleTypesForMake(value);
-                              } else {
-                                setState(() {
-                                  _selectedMake = null;
-                                  _modelController.clear();
-                                  _vehicleTypeController.clear();
-                                });
-                                context.read<VehicleCatalogCubit>().clearModelsAndTypes();
-                              }
-                            },
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Введите марку';
-                              }
-                              return null;
-                            },
-                          );
-                        },
-                      );
+                  TextFormField(
+                    controller: _brandController,
+                    decoration: const InputDecoration(
+                      labelText: 'Марка *',
+                      prefixIcon: Icon(Icons.directions_car),
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Введите марку';
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 16),
-                  BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
-                    builder: (context, catalogState) {
-                      return Autocomplete<String>(
-                        optionsBuilder: (textEditingValue) {
-                          if (catalogState.models.isEmpty) {
-                            return const Iterable<String>.empty();
-                          }
-                          if (textEditingValue.text.isEmpty) {
-                            return catalogState.models.map((m) => m.name);
-                          }
-                          return catalogState.models
-                              .where((m) => m.name.toLowerCase().contains(textEditingValue.text.toLowerCase()))
-                              .map((m) => m.name);
-                        },
-                        onSelected: (selection) {
-                          _modelController.text = selection;
-                        },
-                        fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
-                          if (_modelController.text.isNotEmpty && controller.text != _modelController.text) {
-                            controller.text = _modelController.text;
-                          }
-                          return TextFormField(
-                            controller: controller,
-                            focusNode: focusNode,
-                            decoration: InputDecoration(
-                              labelText: 'Модель *',
-                              prefixIcon: const Icon(Icons.car_rental),
-                              border: const OutlineInputBorder(),
-                              hintText: _selectedMake != null 
-                                  ? 'Начните вводить модель' 
-                                  : 'Сначала выберите марку',
-                            ),
-                            enabled: _selectedMake != null && catalogState.models.isNotEmpty,
-                            onChanged: (value) {
-                              _modelController.text = value;
-                            },
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Введите модель';
-                              }
-                              return null;
-                            },
-                          );
-                        },
-                      );
+                  TextFormField(
+                    controller: _modelController,
+                    decoration: const InputDecoration(
+                      labelText: 'Модель *',
+                      prefixIcon: Icon(Icons.car_rental),
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Введите модель';
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 16),
-                  BlocBuilder<VehicleCatalogCubit, VehicleCatalogState>(
-                    builder: (context, catalogState) {
-                      return Autocomplete<String>(
-                        optionsBuilder: (textEditingValue) {
-                          if (catalogState.vehicleTypes.isEmpty) {
-                            return const Iterable<String>.empty();
-                          }
-                          if (textEditingValue.text.isEmpty) {
-                            return catalogState.vehicleTypes.map((t) => t.name);
-                          }
-                          return catalogState.vehicleTypes
-                              .where((t) => t.name.toLowerCase().contains(textEditingValue.text.toLowerCase()))
-                              .map((t) => t.name);
-                        },
-                        onSelected: (selection) {
-                          _vehicleTypeController.text = selection;
-                        },
-                        fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
-                          if (_vehicleTypeController.text.isNotEmpty && controller.text != _vehicleTypeController.text) {
-                            controller.text = _vehicleTypeController.text;
-                          }
-                          return TextFormField(
-                            controller: controller,
-                            focusNode: focusNode,
-                            decoration: InputDecoration(
-                              labelText: 'Тип кузова',
-                              prefixIcon: const Icon(Icons.category),
-                              border: const OutlineInputBorder(),
-                              hintText: _selectedMake != null && catalogState.vehicleTypes.isNotEmpty
-                                  ? 'Начните вводить тип'
-                                  : 'Сначала выберите марку',
-                            ),
-                            enabled: _selectedMake != null && catalogState.vehicleTypes.isNotEmpty,
-                            onChanged: (value) {
-                              _vehicleTypeController.text = value;
-                            },
-                          );
-                        },
-                      );
-                    },
+                  TextFormField(
+                    controller: _vehicleTypeController,
+                    decoration: const InputDecoration(
+                      labelText: 'Тип кузова',
+                      prefixIcon: Icon(Icons.category),
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
