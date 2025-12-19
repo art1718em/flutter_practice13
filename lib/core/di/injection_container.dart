@@ -5,8 +5,11 @@ import 'package:flutter_practice13/core/storage/database_helper.dart';
 import 'package:flutter_practice13/core/storage/preferences_helper.dart';
 import 'package:flutter_practice13/core/storage/secure_storage_helper.dart';
 import 'package:flutter_practice13/data/datasources/remote/nhtsa/nhtsa_api_client.dart';
+import 'package:flutter_practice13/data/datasources/remote/countries/countries_api_client.dart';
 import 'package:flutter_practice13/data/repositories/vehicle_catalog_repository_impl.dart';
+import 'package:flutter_practice13/data/repositories/countries_repository_impl.dart';
 import 'package:flutter_practice13/domain/repositories/vehicle_catalog_repository.dart';
+import 'package:flutter_practice13/domain/repositories/countries_repository.dart';
 import 'package:flutter_practice13/data/datasources/auth/auth_local_datasource.dart';
 import 'package:flutter_practice13/data/datasources/vehicles/vehicles_local_datasource.dart';
 import 'package:flutter_practice13/data/datasources/expenses/expenses_local_datasource.dart';
@@ -65,6 +68,11 @@ import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_wmis_for_
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_canadian_specs_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_variable_list_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_variable_values_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/countries/get_all_countries_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/countries/get_country_by_name_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/countries/get_country_by_code_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/countries/get_country_by_capital_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/countries/get_countries_by_region_usecase.dart';
 
 import 'package:flutter_practice13/features/auth/logic/auth_cubit.dart';
 import 'package:flutter_practice13/features/vehicles/logic/vehicles_cubit.dart';
@@ -76,6 +84,7 @@ import 'package:flutter_practice13/features/profile/logic/profile_cubit.dart';
 import 'package:flutter_practice13/features/settings/logic/settings_cubit.dart';
 import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_cubit.dart';
 import 'package:flutter_practice13/features/vehicle_reference/logic/vehicle_reference_cubit.dart';
+import 'package:flutter_practice13/features/countries/logic/countries_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -92,6 +101,35 @@ Future<void> setupDependencies() async {
     final dio = Dio();
     dio.options.connectTimeout = const Duration(seconds: 30);
     dio.options.receiveTimeout = const Duration(seconds: 30);
+    
+    // Добавляем интерцептор для логирования
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) {
+        print('🌐 REQUEST[${options.method}] => FULL URI: ${options.uri}');
+        print('🌐 QUERY PARAMS: ${options.queryParameters}');
+        return handler.next(options);
+      },
+      onResponse: (response, handler) {
+        print('✅ RESPONSE[${response.statusCode}] => URI: ${response.requestOptions.uri}');
+        print('📦 DATA TYPE: ${response.data.runtimeType}');
+        if (response.data is List) {
+          print('📦 DATA LENGTH: ${(response.data as List).length}');
+        }
+        return handler.next(response);
+      },
+      onError: (DioException error, handler) {
+        print('❌ ERROR[${error.response?.statusCode}] => URI: ${error.requestOptions.uri}');
+        print('❌ QUERY PARAMS: ${error.requestOptions.queryParameters}');
+        print('❌ MESSAGE: ${error.message}');
+        print('❌ ERROR TYPE: ${error.type}');
+        if (error.response != null) {
+          print('❌ RESPONSE DATA TYPE: ${error.response?.data.runtimeType}');
+          print('❌ RESPONSE DATA: ${error.response?.data}');
+        }
+        return handler.next(error);
+      },
+    ));
+    
     return dio;
   });
 
@@ -99,8 +137,16 @@ Future<void> setupDependencies() async {
     () => NhtsaApiClient(getIt<Dio>()),
   );
 
+  getIt.registerLazySingleton<CountriesApiClient>(
+    () => CountriesApiClient(getIt<Dio>()),
+  );
+
   getIt.registerLazySingleton<VehicleCatalogRepository>(
     () => VehicleCatalogRepositoryImpl(getIt<NhtsaApiClient>()),
+  );
+
+  getIt.registerLazySingleton<CountriesRepository>(
+    () => CountriesRepositoryImpl(getIt<CountriesApiClient>()),
   );
 
   getIt.registerLazySingleton<AuthLocalDataSource>(
@@ -191,6 +237,12 @@ Future<void> setupDependencies() async {
   getIt.registerFactory(() => GetVehicleVariableListUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => GetVehicleVariableValuesUseCase(getIt<VehicleCatalogRepository>()));
 
+  getIt.registerFactory(() => GetAllCountriesUseCase(getIt<CountriesRepository>()));
+  getIt.registerFactory(() => GetCountryByNameUseCase(getIt<CountriesRepository>()));
+  getIt.registerFactory(() => GetCountryByCodeUseCase(getIt<CountriesRepository>()));
+  getIt.registerFactory(() => GetCountryByCapitalUseCase(getIt<CountriesRepository>()));
+  getIt.registerFactory(() => GetCountriesByRegionUseCase(getIt<CountriesRepository>()));
+
   getIt.registerFactory(
     () => AuthCubit(
       loginUseCase: getIt<LoginUseCase>(),
@@ -267,6 +319,16 @@ Future<void> setupDependencies() async {
     () => VehicleReferenceCubit(
       getVehicleVariableListUseCase: getIt<GetVehicleVariableListUseCase>(),
       getVehicleVariableValuesUseCase: getIt<GetVehicleVariableValuesUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => CountriesCubit(
+      getAllCountriesUseCase: getIt<GetAllCountriesUseCase>(),
+      getCountryByNameUseCase: getIt<GetCountryByNameUseCase>(),
+      getCountryByCodeUseCase: getIt<GetCountryByCodeUseCase>(),
+      getCountryByCapitalUseCase: getIt<GetCountryByCapitalUseCase>(),
+      getCountriesByRegionUseCase: getIt<GetCountriesByRegionUseCase>(),
     ),
   );
 }

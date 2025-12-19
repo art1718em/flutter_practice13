@@ -3,7 +3,7 @@ import 'package:flutter_practice13/features/car_expenses/screens/car_expenses_sc
 import 'package:flutter_practice13/features/favorite_places/screens/favorite_places_screen.dart';
 import 'package:flutter_practice13/features/profile/screens/profile_screen.dart';
 import 'package:flutter_practice13/features/tips/screens/tips_screen.dart';
-import 'package:flutter_practice13/features/vehicle_reference/screens/vehicle_reference_screen.dart';
+import 'package:flutter_practice13/features/reference/screens/reference_menu_screen.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
     CarExpensesScreen(),
     TipsScreen(),
     FavoritePlacesScreen(),
-    VehicleReferenceScreen(),
+    ReferenceMenuScreen(),
     ProfileScreen(),
   ];
 

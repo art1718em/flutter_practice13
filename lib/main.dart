@@ -11,6 +11,7 @@ import 'package:flutter_practice13/features/favorite_places/logic/favorite_place
 import 'package:flutter_practice13/features/settings/logic/settings_cubit.dart';
 import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_cubit.dart';
 import 'package:flutter_practice13/features/vehicle_reference/logic/vehicle_reference_cubit.dart';
+import 'package:flutter_practice13/features/countries/logic/countries_cubit.dart';
 import 'package:flutter_practice13/features/navigation/app_router.dart';
 import 'package:flutter_practice13/features/settings/logic/settings_state.dart';
 import 'package:flutter_practice13/core/models/app_settings_model.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<SettingsCubit>()),
         BlocProvider(create: (context) => getIt<VehicleCatalogCubit>()),
         BlocProvider(create: (context) => getIt<VehicleReferenceCubit>()),
+        BlocProvider(create: (context) => getIt<CountriesCubit>()),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, settingsState) {

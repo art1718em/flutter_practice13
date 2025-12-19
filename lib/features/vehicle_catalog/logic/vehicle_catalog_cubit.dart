@@ -3,7 +3,6 @@ import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_all_makes
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_models_for_make_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/decode_vin_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_types_for_make_usecase.dart';
-import 'package:flutter_practice13/domain/entities/vehicle_info.dart';
 import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_state.dart';
 
 class VehicleCatalogCubit extends Cubit<VehicleCatalogState> {

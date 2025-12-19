@@ -16,6 +16,10 @@ import 'package:flutter_practice13/features/vehicles/screens/add_vehicle_screen.
 import 'package:flutter_practice13/features/vehicles/screens/edit_vehicle_screen.dart';
 import 'package:flutter_practice13/features/vehicles/screens/vehicle_details_screen.dart';
 import 'package:flutter_practice13/features/vehicles/screens/vehicles_screen.dart';
+import 'package:flutter_practice13/features/reference/screens/reference_menu_screen.dart';
+import 'package:flutter_practice13/features/vehicle_reference/screens/vehicle_reference_screen.dart';
+import 'package:flutter_practice13/features/countries/screens/countries_list_screen.dart';
+import 'package:flutter_practice13/features/countries/screens/country_details_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
@@ -118,6 +122,29 @@ final router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             return const AddServiceRecordScreen();
           },
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/reference',
+      builder: (context, state) => const ReferenceMenuScreen(),
+      routes: [
+        GoRoute(
+          path: 'vehicle-terms',
+          builder: (context, state) => const VehicleReferenceScreen(),
+        ),
+        GoRoute(
+          path: 'countries',
+          builder: (context, state) => const CountriesListScreen(),
+          routes: [
+            GoRoute(
+              path: ':code',
+              builder: (context, state) {
+                final code = state.pathParameters['code']!;
+                return CountryDetailsScreen(countryCode: code);
+              },
+            ),
+          ],
         ),
       ],
     ),
