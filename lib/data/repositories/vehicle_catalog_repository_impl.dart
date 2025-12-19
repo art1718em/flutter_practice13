@@ -136,6 +136,37 @@ class VehicleCatalogRepositoryImpl implements VehicleCatalogRepository {
       throw Exception('Не удалось загрузить технические характеристики: $e');
     }
   }
+
+  @override
+  Future<List<VehicleVariable>> getVehicleVariableList() async {
+    try {
+      final response = await _apiClient.getVehicleVariableList();
+      return (response.results ?? [])
+          .where((dto) => dto.id != null && dto.name != null)
+          .map((dto) => VehicleVariable(
+                id: dto.id!,
+                name: dto.name!,
+                description: dto.description,
+              ))
+          .toList();
+    } catch (e) {
+      throw Exception('Не удалось загрузить список характеристик: $e');
+    }
+  }
+
+  @override
+  Future<List<VariableValue>> getVehicleVariableValuesList(
+      String variableName) async {
+    try {
+      final response = await _apiClient.getVehicleVariableValuesList(variableName);
+      return (response.results ?? [])
+          .where((dto) => dto.name != null && dto.name!.isNotEmpty)
+          .map((dto) => VariableValue(name: dto.name!))
+          .toList();
+    } catch (e) {
+      throw Exception('Не удалось загрузить значения характеристики: $e');
+    }
+  }
 }
 
 

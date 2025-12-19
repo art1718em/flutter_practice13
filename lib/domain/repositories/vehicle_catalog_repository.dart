@@ -11,6 +11,8 @@ abstract class VehicleCatalogRepository {
     required String make,
     required String model,
   });
+  Future<List<VehicleVariable>> getVehicleVariableList();
+  Future<List<VariableValue>> getVehicleVariableValuesList(String variableName);
 }
 
 

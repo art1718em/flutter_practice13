@@ -109,5 +109,29 @@ class VehicleSpecification extends Equatable {
   List<Object?> get props => [name, value];
 }
 
+class VehicleVariable extends Equatable {
+  final int id;
+  final String name;
+  final String? description;
+
+  const VehicleVariable({
+    required this.id,
+    required this.name,
+    this.description,
+  });
+
+  @override
+  List<Object?> get props => [id, name, description];
+}
+
+class VariableValue extends Equatable {
+  final String name;
+
+  const VariableValue({required this.name});
+
+  @override
+  List<Object?> get props => [name];
+}
+
 
 

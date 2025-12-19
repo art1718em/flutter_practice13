@@ -245,5 +245,65 @@ Map<String, dynamic> _$CanadianSpecResponseDtoToJson(
       'Results': instance.results,
     };
 
+VehicleVariableDto _$VehicleVariableDtoFromJson(Map<String, dynamic> json) =>
+    VehicleVariableDto(
+      id: json['ID'] as int?,
+      name: json['Name'] as String?,
+      description: json['Description'] as String?,
+    );
+
+Map<String, dynamic> _$VehicleVariableDtoToJson(VehicleVariableDto instance) =>
+    <String, dynamic>{
+      'ID': instance.id,
+      'Name': instance.name,
+      'Description': instance.description,
+    };
+
+VehicleVariableListResponseDto _$VehicleVariableListResponseDtoFromJson(
+        Map<String, dynamic> json) =>
+    VehicleVariableListResponseDto(
+      count: json['Count'] as int?,
+      message: json['Message'] as String?,
+      results: (json['Results'] as List<dynamic>?)
+          ?.map((e) => VehicleVariableDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$VehicleVariableListResponseDtoToJson(
+        VehicleVariableListResponseDto instance) =>
+    <String, dynamic>{
+      'Count': instance.count,
+      'Message': instance.message,
+      'Results': instance.results,
+    };
+
+VariableValueDto _$VariableValueDtoFromJson(Map<String, dynamic> json) =>
+    VariableValueDto(
+      name: json['Name'] as String?,
+    );
+
+Map<String, dynamic> _$VariableValueDtoToJson(VariableValueDto instance) =>
+    <String, dynamic>{
+      'Name': instance.name,
+    };
+
+VehicleVariableValuesResponseDto _$VehicleVariableValuesResponseDtoFromJson(
+        Map<String, dynamic> json) =>
+    VehicleVariableValuesResponseDto(
+      count: json['Count'] as int?,
+      message: json['Message'] as String?,
+      results: (json['Results'] as List<dynamic>?)
+          ?.map((e) => VariableValueDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$VehicleVariableValuesResponseDtoToJson(
+        VehicleVariableValuesResponseDto instance) =>
+    <String, dynamic>{
+      'Count': instance.count,
+      'Message': instance.message,
+      'Results': instance.results,
+    };
+
 
 

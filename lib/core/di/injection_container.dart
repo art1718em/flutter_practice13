@@ -63,6 +63,8 @@ import 'package:flutter_practice13/domain/usecases/vehicle_catalog/decode_vin_us
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_types_for_make_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_wmis_for_manufacturer_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_canadian_specs_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_variable_list_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_variable_values_usecase.dart';
 
 import 'package:flutter_practice13/features/auth/logic/auth_cubit.dart';
 import 'package:flutter_practice13/features/vehicles/logic/vehicles_cubit.dart';
@@ -73,6 +75,7 @@ import 'package:flutter_practice13/features/favorite_places/logic/favorite_place
 import 'package:flutter_practice13/features/profile/logic/profile_cubit.dart';
 import 'package:flutter_practice13/features/settings/logic/settings_cubit.dart';
 import 'package:flutter_practice13/features/vehicle_catalog/logic/vehicle_catalog_cubit.dart';
+import 'package:flutter_practice13/features/vehicle_reference/logic/vehicle_reference_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -185,6 +188,8 @@ Future<void> setupDependencies() async {
   getIt.registerFactory(() => GetVehicleTypesForMakeUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => GetWMIsForManufacturerUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => GetCanadianSpecsUseCase(getIt<VehicleCatalogRepository>()));
+  getIt.registerFactory(() => GetVehicleVariableListUseCase(getIt<VehicleCatalogRepository>()));
+  getIt.registerFactory(() => GetVehicleVariableValuesUseCase(getIt<VehicleCatalogRepository>()));
 
   getIt.registerFactory(
     () => AuthCubit(
@@ -255,6 +260,13 @@ Future<void> setupDependencies() async {
       getModelsForMakeUseCase: getIt<GetModelsForMakeUseCase>(),
       decodeVinUseCase: getIt<DecodeVinUseCase>(),
       getVehicleTypesForMakeUseCase: getIt<GetVehicleTypesForMakeUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => VehicleReferenceCubit(
+      getVehicleVariableListUseCase: getIt<GetVehicleVariableListUseCase>(),
+      getVehicleVariableValuesUseCase: getIt<GetVehicleVariableValuesUseCase>(),
     ),
   );
 }

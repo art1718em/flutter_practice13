@@ -37,6 +37,14 @@ abstract class NhtsaApiClient {
     @Query('make') String make,
     @Query('model') String model,
   );
+
+  @GET('/GetVehicleVariableList?format=json')
+  Future<VehicleVariableListResponseDto> getVehicleVariableList();
+
+  @GET('/GetVehicleVariableValuesList/{variableName}?format=json')
+  Future<VehicleVariableValuesResponseDto> getVehicleVariableValuesList(
+    @Path('variableName') String variableName,
+  );
 }
 
 

@@ -342,5 +342,81 @@ class CanadianSpecResponseDto {
   Map<String, dynamic> toJson() => _$CanadianSpecResponseDtoToJson(this);
 }
 
+@JsonSerializable()
+class VehicleVariableDto {
+  @JsonKey(name: 'ID')
+  final int? id;
+  @JsonKey(name: 'Name')
+  final String? name;
+  @JsonKey(name: 'Description')
+  final String? description;
+
+  VehicleVariableDto({
+    this.id,
+    this.name,
+    this.description,
+  });
+
+  factory VehicleVariableDto.fromJson(Map<String, dynamic> json) =>
+      _$VehicleVariableDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VehicleVariableDtoToJson(this);
+}
+
+@JsonSerializable()
+class VehicleVariableListResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'Results')
+  final List<VehicleVariableDto>? results;
+
+  VehicleVariableListResponseDto({
+    this.count,
+    this.message,
+    this.results,
+  });
+
+  factory VehicleVariableListResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$VehicleVariableListResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VehicleVariableListResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class VariableValueDto {
+  @JsonKey(name: 'Name')
+  final String? name;
+
+  VariableValueDto({this.name});
+
+  factory VariableValueDto.fromJson(Map<String, dynamic> json) =>
+      _$VariableValueDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VariableValueDtoToJson(this);
+}
+
+@JsonSerializable()
+class VehicleVariableValuesResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'Results')
+  final List<VariableValueDto>? results;
+
+  VehicleVariableValuesResponseDto({
+    this.count,
+    this.message,
+    this.results,
+  });
+
+  factory VehicleVariableValuesResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$VehicleVariableValuesResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VehicleVariableValuesResponseDtoToJson(this);
+}
+
 
 
