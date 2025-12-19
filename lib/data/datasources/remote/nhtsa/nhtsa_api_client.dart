@@ -30,6 +30,13 @@ abstract class NhtsaApiClient {
   Future<WmiResponseDto> getWMIsForManufacturer(
     @Path('manufacturer') String manufacturer,
   );
+
+  @GET('/GetCanadianVehicleSpecifications/?year={year}&make={make}&model={model}&format=json')
+  Future<CanadianSpecResponseDto> getCanadianVehicleSpecifications(
+    @Query('year') int year,
+    @Query('make') String make,
+    @Query('model') String model,
+  );
 }
 
 

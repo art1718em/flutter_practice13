@@ -287,5 +287,60 @@ class WmiResponseDto {
   Map<String, dynamic> toJson() => _$WmiResponseDtoToJson(this);
 }
 
+@JsonSerializable()
+class CanadianSpecDto {
+  @JsonKey(name: 'Specs')
+  final List<SpecItemDto>? specs;
+
+  CanadianSpecDto({this.specs});
+
+  factory CanadianSpecDto.fromJson(Map<String, dynamic> json) =>
+      _$CanadianSpecDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CanadianSpecDtoToJson(this);
+}
+
+@JsonSerializable()
+class SpecItemDto {
+  @JsonKey(name: 'Name')
+  final String? name;
+  @JsonKey(name: 'Value')
+  final String? value;
+
+  SpecItemDto({
+    this.name,
+    this.value,
+  });
+
+  factory SpecItemDto.fromJson(Map<String, dynamic> json) =>
+      _$SpecItemDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SpecItemDtoToJson(this);
+}
+
+@JsonSerializable()
+class CanadianSpecResponseDto {
+  @JsonKey(name: 'Count')
+  final int? count;
+  @JsonKey(name: 'Message')
+  final String? message;
+  @JsonKey(name: 'SearchCriteria')
+  final String? searchCriteria;
+  @JsonKey(name: 'Results')
+  final List<CanadianSpecDto>? results;
+
+  CanadianSpecResponseDto({
+    this.count,
+    this.message,
+    this.searchCriteria,
+    this.results,
+  });
+
+  factory CanadianSpecResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$CanadianSpecResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CanadianSpecResponseDtoToJson(this);
+}
+
 
 

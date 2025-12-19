@@ -202,5 +202,48 @@ Map<String, dynamic> _$WmiResponseDtoToJson(WmiResponseDto instance) =>
       'Results': instance.results,
     };
 
+CanadianSpecDto _$CanadianSpecDtoFromJson(Map<String, dynamic> json) =>
+    CanadianSpecDto(
+      specs: (json['Specs'] as List<dynamic>?)
+          ?.map((e) => SpecItemDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$CanadianSpecDtoToJson(CanadianSpecDto instance) =>
+    <String, dynamic>{
+      'Specs': instance.specs,
+    };
+
+SpecItemDto _$SpecItemDtoFromJson(Map<String, dynamic> json) => SpecItemDto(
+      name: json['Name'] as String?,
+      value: json['Value'] as String?,
+    );
+
+Map<String, dynamic> _$SpecItemDtoToJson(SpecItemDto instance) =>
+    <String, dynamic>{
+      'Name': instance.name,
+      'Value': instance.value,
+    };
+
+CanadianSpecResponseDto _$CanadianSpecResponseDtoFromJson(
+        Map<String, dynamic> json) =>
+    CanadianSpecResponseDto(
+      count: json['Count'] as int?,
+      message: json['Message'] as String?,
+      searchCriteria: json['SearchCriteria'] as String?,
+      results: (json['Results'] as List<dynamic>?)
+          ?.map((e) => CanadianSpecDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$CanadianSpecResponseDtoToJson(
+        CanadianSpecResponseDto instance) =>
+    <String, dynamic>{
+      'Count': instance.count,
+      'Message': instance.message,
+      'SearchCriteria': instance.searchCriteria,
+      'Results': instance.results,
+    };
+
 
 

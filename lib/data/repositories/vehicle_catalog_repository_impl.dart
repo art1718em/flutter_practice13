@@ -101,6 +101,41 @@ class VehicleCatalogRepositoryImpl implements VehicleCatalogRepository {
       throw Exception('Не удалось загрузить WMI коды: $e');
     }
   }
+
+  @override
+  Future<List<VehicleSpecification>> getCanadianVehicleSpecifications({
+    required int year,
+    required String make,
+    required String model,
+  }) async {
+    try {
+      final response = await _apiClient.getCanadianVehicleSpecifications(
+        year,
+        make,
+        model,
+      );
+      
+      final List<VehicleSpecification> specs = [];
+      
+      for (final result in response.results ?? []) {
+        for (final spec in result.specs ?? []) {
+          if (spec.name != null && 
+              spec.value != null && 
+              spec.value!.isNotEmpty &&
+              spec.name!.trim().isNotEmpty) {
+            specs.add(VehicleSpecification(
+              name: spec.name!,
+              value: spec.value!,
+            ));
+          }
+        }
+      }
+      
+      return specs;
+    } catch (e) {
+      throw Exception('Не удалось загрузить технические характеристики: $e');
+    }
+  }
 }
 
 

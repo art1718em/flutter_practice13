@@ -6,6 +6,11 @@ abstract class VehicleCatalogRepository {
   Future<VinDecodeResult> decodeVin(String vin);
   Future<List<VehicleType>> getVehicleTypesForMake(String make);
   Future<List<Wmi>> getWMIsForManufacturer(String manufacturer);
+  Future<List<VehicleSpecification>> getCanadianVehicleSpecifications({
+    required int year,
+    required String make,
+    required String model,
+  });
 }
 
 

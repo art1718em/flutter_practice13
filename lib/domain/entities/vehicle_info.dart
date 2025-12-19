@@ -96,5 +96,18 @@ class Wmi extends Equatable {
   List<Object?> get props => [code, country, name, vehicleType];
 }
 
+class VehicleSpecification extends Equatable {
+  final String name;
+  final String value;
+
+  const VehicleSpecification({
+    required this.name,
+    required this.value,
+  });
+
+  @override
+  List<Object?> get props => [name, value];
+}
+
 
 

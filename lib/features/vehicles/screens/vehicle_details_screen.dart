@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_practice13/core/di/injection_container.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_wmis_for_manufacturer_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_canadian_specs_usecase.dart';
 import 'package:flutter_practice13/domain/entities/vehicle_info.dart';
 import 'package:flutter_practice13/features/settings/logic/settings_cubit.dart';
 import 'package:flutter_practice13/features/settings/logic/settings_state.dart';
@@ -28,12 +29,15 @@ class VehicleDetailsScreen extends StatefulWidget {
 class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
   List<Wmi>? _wmiCodes;
   bool _isLoadingWmi = false;
+  List<VehicleSpecification>? _canadianSpecs;
+  bool _isLoadingSpecs = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadWmiCodes();
+      _loadCanadianSpecs();
     });
   }
 
@@ -171,7 +175,9 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                                   wmi.code,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).primaryColor,
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.lightGreenAccent
+                                        : Theme.of(context).primaryColor,
                                     fontFamily: 'monospace',
                                   ),
                                 ),
@@ -193,6 +199,157 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                           )),
                       const SizedBox(height: 8),
                     ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _loadCanadianSpecs() async {
+    final state = context.read<VehiclesCubit>().state;
+    final vehicle = state.vehicles.firstWhere(
+      (v) => v.id == widget.vehicleId,
+      orElse: () => state.vehicles.first,
+    );
+
+    if (vehicle.brand.isNotEmpty && vehicle.model.isNotEmpty) {
+      setState(() {
+        _isLoadingSpecs = true;
+      });
+
+      try {
+        final getSpecsUseCase = getIt<GetCanadianSpecsUseCase>();
+        final specs = await getSpecsUseCase(
+          year: vehicle.year,
+          make: vehicle.brand,
+          model: vehicle.model,
+        );
+        
+        if (!mounted) return;
+        
+        setState(() {
+          _canadianSpecs = specs;
+          _isLoadingSpecs = false;
+        });
+      } catch (e) {
+        if (!mounted) return;
+        setState(() {
+          _isLoadingSpecs = false;
+        });
+      }
+    }
+  }
+
+  void _showSpecsBottomSheet(String brand, String model, int year) {
+    if (_canadianSpecs == null || _canadianSpecs!.isEmpty) return;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Технические характеристики',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '$brand $model ($year)',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Colors.orange.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          size: 20,
+                          color: Colors.orange[700],
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Данные из канадской базы NHTSA в технических кодах производителя',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.orange[700],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 1),
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController,
+                padding: const EdgeInsets.all(16),
+                itemCount: _canadianSpecs!.length,
+                itemBuilder: (context, index) {
+                  final spec = _canadianSpecs![index];
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: ListTile(
+                      dense: true,
+                      title: Text(
+                        spec.name,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      trailing: Text(
+                        spec.value,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.lightGreenAccent
+                              : Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),
@@ -435,6 +592,92 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                           ] else
                             Text(
                               'Не удалось загрузить WMI коды',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 14,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.settings,
+                                color: Theme.of(context).primaryColor,
+                                size: 24,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  'Технические характеристики',
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          if (_isLoadingSpecs)
+                            const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(16),
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          else if (_canadianSpecs != null && _canadianSpecs!.isNotEmpty) ...[
+                            Text(
+                              'Доступно ${_canadianSpecs!.length} характеристик для ${vehicle.brand} ${vehicle.model} (${vehicle.year})',
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.grey[700],
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Данные из канадской базы NHTSA согласно техническим кодам производителя',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.grey[600],
+                                    fontSize: 12,
+                                  ),
+                            ),
+                            const SizedBox(height: 16),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton.icon(
+                                onPressed: () => _showSpecsBottomSheet(
+                                  vehicle.brand,
+                                  vehicle.model,
+                                  vehicle.year,
+                                ),
+                                icon: const Icon(Icons.info_outline),
+                                label: const Text('Просмотреть характеристики'),
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ] else
+                            Text(
+                              'Технические характеристики не найдены',
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 14,
