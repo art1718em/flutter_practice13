@@ -60,7 +60,10 @@ import 'package:flutter_practice13/domain/usecases/profile/get_profile_usecase.d
 import 'package:flutter_practice13/domain/usecases/profile/update_profile_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/settings/get_settings_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/settings/update_settings_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_all_makes_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_models_for_make_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/decode_vin_usecase.dart';
+import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_types_for_make_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_wmis_for_manufacturer_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_canadian_specs_usecase.dart';
 import 'package:flutter_practice13/domain/usecases/vehicle_catalog/get_vehicle_variable_list_usecase.dart';
@@ -225,7 +228,10 @@ Future<void> setupDependencies() async {
   getIt.registerFactory(() => GetSettingsUseCase(getIt<SettingsRepository>()));
   getIt.registerFactory(() => UpdateSettingsUseCase(getIt<SettingsRepository>()));
 
+  getIt.registerFactory(() => GetAllMakesUseCase(getIt<VehicleCatalogRepository>()));
+  getIt.registerFactory(() => GetModelsForMakeUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => DecodeVinUseCase(getIt<VehicleCatalogRepository>()));
+  getIt.registerFactory(() => GetVehicleTypesForMakeUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => GetWMIsForManufacturerUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => GetCanadianSpecsUseCase(getIt<VehicleCatalogRepository>()));
   getIt.registerFactory(() => GetVehicleVariableListUseCase(getIt<VehicleCatalogRepository>()));
@@ -302,7 +308,10 @@ Future<void> setupDependencies() async {
 
   getIt.registerFactory(
     () => VehicleCatalogCubit(
+      getAllMakesUseCase: getIt<GetAllMakesUseCase>(),
+      getModelsForMakeUseCase: getIt<GetModelsForMakeUseCase>(),
       decodeVinUseCase: getIt<DecodeVinUseCase>(),
+      getVehicleTypesForMakeUseCase: getIt<GetVehicleTypesForMakeUseCase>(),
     ),
   );
 

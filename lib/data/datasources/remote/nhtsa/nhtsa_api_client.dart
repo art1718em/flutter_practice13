@@ -8,6 +8,19 @@ part 'nhtsa_api_client.g.dart';
 abstract class NhtsaApiClient {
   factory NhtsaApiClient(Dio dio, {String baseUrl}) = _NhtsaApiClient;
 
+  @GET('/GetAllMakes?format=json')
+  Future<MakesResponseDto> getAllMakes();
+
+  @GET('/GetModelsForMake/{makeName}?format=json')
+  Future<ModelsResponseDto> getModelsForMake(
+    @Path('makeName') String makeName,
+  );
+
+  @GET('/GetVehicleTypesForMake/{makeName}?format=json')
+  Future<VehicleTypesResponseDto> getVehicleTypesForMake(
+    @Path('makeName') String makeName,
+  );
+
   @GET('/DecodeVin/{vin}?format=json')
   Future<VinDecodeResponseDto> decodeVin(
     @Path('vin') String vin,

@@ -13,6 +13,87 @@ class _NhtsaApiClient implements NhtsaApiClient {
   String? baseUrl;
 
   @override
+  Future<MakesResponseDto> getAllMakes() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MakesResponseDto>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/GetAllMakes?format=json',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = MakesResponseDto.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ModelsResponseDto> getModelsForMake(String makeName) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ModelsResponseDto>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/GetModelsForMake/${makeName}?format=json',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ModelsResponseDto.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<VehicleTypesResponseDto> getVehicleTypesForMake(String makeName) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<VehicleTypesResponseDto>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/GetVehicleTypesForMake/${makeName}?format=json',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = VehicleTypesResponseDto.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<VinDecodeResponseDto> decodeVin(String vin) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
