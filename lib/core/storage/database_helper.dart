@@ -95,6 +95,26 @@ class DatabaseHelper {
         nextServiceDate TEXT
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE countries (
+        countryCode TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        officialName TEXT,
+        countryCode3 TEXT,
+        capital TEXT,
+        region TEXT,
+        subregion TEXT,
+        timezones TEXT NOT NULL,
+        currency TEXT,
+        currencySymbol TEXT,
+        languages TEXT NOT NULL,
+        borders TEXT NOT NULL,
+        phonePrefix TEXT,
+        flagUrl TEXT,
+        cachedAt TEXT NOT NULL
+      )
+    ''');
   }
 
   Future<void> close() async {

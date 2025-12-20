@@ -8,6 +8,7 @@ import 'package:flutter_practice13/core/api/nhtsa/nhtsa_api_client.dart';
 import 'package:flutter_practice13/core/api/countries/countries_api_client.dart';
 import 'package:flutter_practice13/data/datasources/vehicle_catalog/vehicle_catalog_datasource.dart';
 import 'package:flutter_practice13/data/datasources/countries/countries_datasource.dart';
+import 'package:flutter_practice13/data/datasources/countries/countries_local_datasource.dart';
 import 'package:flutter_practice13/data/repositories/vehicle_catalog_repository_impl.dart';
 import 'package:flutter_practice13/data/repositories/countries_repository_impl.dart';
 import 'package:flutter_practice13/domain/repositories/vehicle_catalog_repository.dart';
@@ -120,12 +121,19 @@ Future<void> setupDependencies() async {
     () => CountriesDataSource(getIt<CountriesApiClient>()),
   );
 
+  getIt.registerLazySingleton<CountriesLocalDataSource>(
+    () => CountriesLocalDataSource(DatabaseHelper.instance),
+  );
+
   getIt.registerLazySingleton<VehicleCatalogRepository>(
     () => VehicleCatalogRepositoryImpl(getIt<VehicleCatalogDataSource>()),
   );
 
   getIt.registerLazySingleton<CountriesRepository>(
-    () => CountriesRepositoryImpl(getIt<CountriesDataSource>()),
+    () => CountriesRepositoryImpl(
+      getIt<CountriesDataSource>(),
+      getIt<CountriesLocalDataSource>(),
+    ),
   );
 
   getIt.registerLazySingleton<AuthLocalDataSource>(
